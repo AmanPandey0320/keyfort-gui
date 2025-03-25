@@ -1,0 +1,23 @@
+:root {
+  --background: #040d1f;
+  --primary: #152b59;
+  --secondary: #f5a51b;
+  --text-primary: #152b59;
+  --text-opacity: #4b5563;
+  --brown: #7d6d45;
+  --dark-brown: #594723;
+}
+
+body {
+  font-family: var(--font-rubrik);
+  margin: 0px;
+  padding: 0px;
+}
+*{
+  margin: 0px;
+}
+
+
+a {
+  text-decoration: none;
+}

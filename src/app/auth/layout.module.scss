@@ -1,0 +1,45 @@
+.authLayout{
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxLayout{
+    width: 75vw;
+    padding: 1.25rem;
+    max-width: 25rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    @media (min-width: 768px) {
+        width: 25rem;
+        padding: 2rem;
+    }
+}
+
+.logoImg{
+    height: 5rem;
+    width: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.actionHeading{
+    color: var(--text-primary);
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 2.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.actionDescription{
+    color: var(--text-opacity);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
