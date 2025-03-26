@@ -52,12 +52,12 @@ export default function SignInPage() {
                             }
                         />
                     </FormControl>
-                    <Grid2 direction={"row"} sx={{ justifyContent: 'space-between', alignItems:"center" }} container>
+                    <Grid2 direction={"row"} sx={{ justifyContent: 'space-between', alignItems: "center" }} container>
                         <Grid2>
                             <FormControlLabel label={<span className={`${style.rememberMeText}`} >{"Remember me"}</span>} control={<Checkbox checked={isRemeber} onChange={() => toggleBooleanState(setRemember)} />} />
                         </Grid2>
                         <Grid2>
-                            <Link href={"/auth/forgot-password"} style={{textDecoration:"none"}}>
+                            <Link href={"/auth/forgot-password"} style={{ textDecoration: "none" }}>
                                 <p className={`${style.forgotPassword}`}>
                                     {"Forgot your password?"}
                                 </p>
@@ -65,12 +65,22 @@ export default function SignInPage() {
                         </Grid2>
                     </Grid2>
                 </Grid2>
-                <Grid2 sx={{width:"100%"}}>
+                <Grid2 sx={{ width: "100%" }}>
                     <button className={`${style.signInButton}`}>
                         <span>
                             Sign in
                         </span>
                     </button>
+                </Grid2>
+                <Grid2>
+                    <p className={`${style.dontHaveAccount}`} >
+                        {"Don't have an account? "}
+                        <Link href={"/auth/contact-admin"} style={{ textDecoration: "none" }}>
+                            <span className={`${style.forgotPassword}`}>
+                                {"Contact admin"}
+                            </span>
+                        </Link>
+                    </p>
                 </Grid2>
             </Grid2>
         </Box>
