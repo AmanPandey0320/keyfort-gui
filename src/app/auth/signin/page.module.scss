@@ -1,0 +1,41 @@
+.inputText{
+    width: 25rem;
+}
+
+.rememberMeText{
+    color: #374151;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.forgotPassword{
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    &:hover{
+        color: var(--brown);
+    }
+}
+
+.signInButton{
+    width: 100%;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: var(--primary);
+    border-radius: 0.375rem;
+    justify-content: center;
+    border-color: transparent;
+    color: white;
+    transition: background-color 0.2s ease;
+    &:hover{
+        cursor: pointer;
+        background-color: var(--dark-brown);
+    }
+    &:active{
+        background-color: var(--brown);
+    }
+    
+}
