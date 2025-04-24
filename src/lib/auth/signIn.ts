@@ -3,7 +3,7 @@ import ENDPOINT from "@/assets/data/api";
 import { kfBackendClient } from "../utils/apiFunction";
 
 
-async function authorizeClient(){
+export async function authorizeClient(){
     
     try {
         const body = {
@@ -14,10 +14,15 @@ async function authorizeClient(){
         }
 
         const response = await kfBackendClient.post(ENDPOINT.AUTHZ_CLIENT_API,body);
-        console.log(response);
+        if(response.status === 200){
+            return true;
+        }
+
+        return false;
 
     } catch (error: any) {
         console.log(error)
+        return false;
     }
 }
 
