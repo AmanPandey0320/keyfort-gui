@@ -2,7 +2,7 @@ import { Grid2 } from "@mui/material"
 import styles from "./layout.module.scss"
 import Image from "next/image"
 import logo from "@/assets/images/logo-kf.svg"
-import { authorizeClient } from "@/lib/auth/signIn"
+import { authorizeClient } from "@/lib/service/auth/signIn"
 
 export default async function AuthLayout({
     children
