@@ -2,5 +2,6 @@ export default interface ResponseData{
     data: any[],
     error: String[],
     message: String[],
-    isSuccess: Boolean
+    isSuccess: Boolean,
+    status: number
 }

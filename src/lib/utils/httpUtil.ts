@@ -14,6 +14,7 @@ const kfBackendClient = axios.create({
 const resolveResponse = (response: AxiosResponse<any, any>) => {
     let data: ResponseData;
     data = response.data;
+    data.status = response.status;
     
     if(response.status < 400){
         data.isSuccess = true;

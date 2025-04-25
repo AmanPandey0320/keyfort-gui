@@ -1,5 +1,5 @@
 "use client"
-import { Box, Button, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, OutlinedInput, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import layoutStyle from "../layout.module.scss";
 import style from "./page.module.scss";
 import { Person, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -7,10 +7,40 @@ import Checkbox from '@mui/material/Checkbox';
 import { useState } from "react";
 import { toggleBooleanState } from "@/lib/utils/commonFunctions";
 import Link from "next/link";
+import { loginAction } from "@/lib/service/auth/signIn";
+import ResponseData from "@/lib/type/ResponseData";
 
 export default function SignInPage() {
     const [isVisible, setVisible] = useState(false);
     const [isRemeber, setRemember] = useState(false);
+
+    const [username,setUserName] = useState("");
+    const [password,setPassWord] = useState("");
+
+    const [isLoginProgress,setLoginProgress] = useState(false);
+
+    const userNameEventHandler = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setUserName(e.target.value);
+    }
+
+    const passwordEventHandler = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setPassWord(e.target.value);
+    }
+
+    const loginBtnClickHandler = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setLoginProgress(true);
+
+        // loginAction(username,password).then((data:ResponseData | undefined) => {
+        //     if(typeof data != "undefined"){
+
+        //     }else{
+                
+        //     }
+        // }).catch(e => {
+
+        // });
+
+    }
 
 
     return (
@@ -29,6 +59,8 @@ export default function SignInPage() {
                         <OutlinedInput
                             id="email_textbox"
                             placeholder="Email-ID"
+                            value={username}
+                            onChange={userNameEventHandler}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton>
@@ -42,6 +74,8 @@ export default function SignInPage() {
                         <OutlinedInput
                             id="password_textbox"
                             placeholder="Password"
+                            value={password}
+                            onChange={passwordEventHandler}
                             type={isVisible ? "text" : "password"}
                             endAdornment={
                                 <InputAdornment position="end">
@@ -66,7 +100,7 @@ export default function SignInPage() {
                     </Grid2>
                 </Grid2>
                 <Grid2 sx={{ width: "100%" }}>
-                    <button className={`${style.signInButton}`}>
+                    <button disabled={isLoginProgress} className={`${style.signInButton}`}>
                         <span>
                             Sign in
                         </span>
