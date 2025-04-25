@@ -9,6 +9,7 @@ import { toggleBooleanState } from "@/lib/utils/commonFunctions";
 import Link from "next/link";
 import { loginAction } from "@/lib/service/auth/signIn";
 import ResponseData from "@/lib/type/ResponseData";
+import axios from "axios";
 
 export default function SignInPage() {
     const [isVisible, setVisible] = useState(false);
@@ -30,15 +31,17 @@ export default function SignInPage() {
     const loginBtnClickHandler = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setLoginProgress(true);
 
-        // loginAction(username,password).then((data:ResponseData | undefined) => {
-        //     if(typeof data != "undefined"){
+        axios.post("/api/auth/signin",{username,password})
+        .then(success => {
+            const {data} = success;
+            if(data.isSuccess){
+                alert("ho gya login, ab nacho!!");
+            }
 
-        //     }else{
-                
-        //     }
-        // }).catch(e => {
-
-        // });
+            setLoginProgress(false);
+        }).catch(error => {
+            setLoginProgress(false);
+        })
 
     }
 
@@ -100,7 +103,7 @@ export default function SignInPage() {
                     </Grid2>
                 </Grid2>
                 <Grid2 sx={{ width: "100%" }}>
-                    <button disabled={isLoginProgress} className={`${style.signInButton}`}>
+                    <button onClick={loginBtnClickHandler} disabled={isLoginProgress} className={`${style.signInButton}`}>
                         <span>
                             Sign in
                         </span>
