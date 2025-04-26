@@ -1,5 +1,5 @@
 "use client"
-import { Box, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import { Alert, Box, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import layoutStyle from "../layout.module.scss";
 import style from "./page.module.scss";
 import { Person, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -7,41 +7,54 @@ import Checkbox from '@mui/material/Checkbox';
 import { useState } from "react";
 import { toggleBooleanState } from "@/lib/utils/commonFunctions";
 import Link from "next/link";
-import { loginAction } from "@/lib/service/auth/signIn";
 import ResponseData from "@/lib/type/ResponseData";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
     const [isVisible, setVisible] = useState(false);
     const [isRemeber, setRemember] = useState(false);
 
-    const [username,setUserName] = useState("");
-    const [password,setPassWord] = useState("");
+    const [username, setUserName] = useState("");
+    const [password, setPassWord] = useState("");
 
-    const [isLoginProgress,setLoginProgress] = useState(false);
+    const [isLoginProgress, setLoginProgress] = useState(false);
+    const [errors, setErrors] = useState<String[]>([]);
 
-    const userNameEventHandler = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const router = useRouter();
+
+    const userNameEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setUserName(e.target.value);
     }
 
-    const passwordEventHandler = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const passwordEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setPassWord(e.target.value);
     }
 
-    const loginBtnClickHandler = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    /**
+     * @description login btn click handler
+     * @param e 
+     */
+    const loginBtnClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setLoginProgress(true);
+        let data: ResponseData;
+        const query = new URLSearchParams(window.location.search);
+        const redirectUrl = query.get("redirectUrl");
 
-        axios.post("/api/auth/signin",{username,password})
-        .then(success => {
-            const {data} = success;
-            if(data.isSuccess){
-                alert("ho gya login, ab nacho!!");
-            }
+        console.log("redirecturi---->"+redirectUrl);
+        
+        axios.post("/api/auth/signin", { username, password })
+            .then(success => {
+                data = success.data;
+                
+                //TODO success handler
 
-            setLoginProgress(false);
-        }).catch(error => {
-            setLoginProgress(false);
-        })
+                setLoginProgress(false);
+            }).catch((error) => {
+                data = error.response.data;
+                setErrors(data.error);
+                setLoginProgress(false);
+            })
 
     }
 
@@ -57,6 +70,19 @@ export default function SignInPage() {
                         {"Enter your credentials to access admin dashboard"}
                     </p>
                 </Grid2>
+                <>
+                    {
+                        errors.map((e,i) => {
+                            return (
+                                <Grid2 key={`error_sl_${i}`} sx={{ width: '100%' }}>
+                                    <Alert variant="filled" severity="error">
+                                        {`${e}`}
+                                    </Alert>
+                                </Grid2>
+                            )
+                        })
+                    }
+                </>
                 <Grid2>
                     <FormControl sx={{ width: '25rem', marginBottom: '0.5rem' }} color="warning" variant="outlined">
                         <OutlinedInput
