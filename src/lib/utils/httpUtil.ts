@@ -11,7 +11,7 @@ const kfBackendClient = axios.create({
  * 
  * @param response 
  */
-const resolveResponse = (response: AxiosResponse<any, any>) => {
+const resolveHttpResponse = (response: AxiosResponse<any, any>) => {
     let data: ResponseData;
     data = response.data;
     data.status = response.status;
@@ -25,7 +25,24 @@ const resolveResponse = (response: AxiosResponse<any, any>) => {
     return data;
 }
 
+/**
+ * 
+ * @param error 
+ * @returns 
+ */
+const resolveHttpError = (error: any) => {
+    let data : ResponseData;
+    data = {
+        ...error.response.data,
+        isSuccess:false,
+        status: error.status
+    }
+
+    return data;
+}
+
 export {
     kfBackendClient,
-    resolveResponse
+    resolveHttpResponse,
+    resolveHttpError
 }

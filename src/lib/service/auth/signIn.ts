@@ -1,6 +1,6 @@
 import {KF_CLIENT_ID,KF_CLIENT_SECRET} from "@/lib/config/envConfig";
 import ENDPOINT from "@/assets/data/api";
-import { kfBackendClient,resolveResponse } from "../../utils/httpUtil";
+import { kfBackendClient,resolveHttpError,resolveHttpResponse } from "../../utils/httpUtil";
 import { AxiosResponse } from "axios";
 import ResponseData from "@/lib/type/ResponseData";
 
@@ -37,6 +37,7 @@ export async function authorizeClient(){
  * @param password 
  */
 export const loginAction = async (username:String, password: String) => {
+    let data : ResponseData;
     try {
         const body = {
             username,
@@ -44,11 +45,12 @@ export const loginAction = async (username:String, password: String) => {
         }
 
         const response : AxiosResponse<any, any> = await kfBackendClient.post(ENDPOINT.LOGIN_ACTION_API,body);
-        const data : ResponseData = resolveResponse(response);
-
-        return data;
+        data = resolveHttpResponse(response);
         
-    } catch (error) {
+    } catch (error: any) {
+        data = resolveHttpError(error);
         console.log(error);
     }
+
+    return data;
 }
