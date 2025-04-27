@@ -17,12 +17,12 @@ export default async function AuthLayout({
                     justifyContent: 'center',
                     alignItems: 'center'
                 }} spacing={1}>
-                    <Grid2>
+                    <div>
                         <Image className={styles.logoImg} src={logo} alt="keyfort_logo" />
-                    </Grid2>
-                    <Grid2>
+                    </div>
+                    <div>
                         {isClientValid? children : "Invalid client details"}
-                    </Grid2>
+                    </div>
                 </Grid2>
             </div>
         </div>
