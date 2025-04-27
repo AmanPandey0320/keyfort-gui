@@ -28,31 +28,39 @@ export default function SignInForm() {
         setPassWord(e.target.value);
     }
 
+    const handleLoginReq = async () => {
+        let data: ResponseData;
+        try {
+
+
+            let response = await axios.post("/api/auth/signin", { username, password });
+            data = response.data;
+            const token = data?.data?.at(0)?.authorizationCode;
+
+            // get access token
+            await axios.post("/api/auth/token?grantType=authorization", { token });
+
+            //success handler
+
+        } catch (error: any) {
+            data = error.response.data;
+            setErrors(data.error);
+        }
+    }
+
     /**
      * @description login btn click handler
      * @param e 
      */
     const loginBtnClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setLoginProgress(true);
-        let data: ResponseData;
-        const query = new URLSearchParams(window.location.search);
-        const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
 
-        console.log(window.location);
-
-
-        axios.post("/api/auth/signin", { username, password })
-            .then(success => {
-                data = success.data;
-
-                //TODO success handler
+        handleLoginReq()
+            .then(() => {
+                const query = new URLSearchParams(window.location.search);
+                const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
                 window.location.href = redirectUrl;
-
-
-                setLoginProgress(false);
-            }).catch((error) => {
-                data = error.response.data;
-                setErrors(data.error);
+            }).finally(() => {
                 setLoginProgress(false);
             })
 
