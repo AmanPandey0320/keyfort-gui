@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 const logger = getLogger("api/auth/token");
 
 export async function POST(req: NextRequest) {
+    logger.info("req recieved at %s",req.nextUrl.href)
     try {
         const { token } = await req.json();
         const grantType = req.nextUrl.searchParams.get("grantType");
@@ -19,6 +20,11 @@ export async function POST(req: NextRequest) {
         if (typeof data === undefined) {
             logger.error("No data recieved for: %o",req);
             return NextResponse.json({ error: ["Internal server error"] }, { status: 500 });
+        }
+
+        if(data.isSuccess == false){
+            logger.error("Integration error: %o",data);
+            return NextResponse.json(data, { status: data.status });
         }
 
         let response = NextResponse.json(null,{ status: data?.status });
