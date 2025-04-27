@@ -1,64 +1,9 @@
-"use client"
-import { Alert, Box, FormControl, FormControlLabel, Grid2, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import layoutStyle from "../layout.module.scss";
-import style from "./page.module.scss";
-import { Person, Visibility, VisibilityOff } from "@mui/icons-material";
-import Checkbox from '@mui/material/Checkbox';
-import { useState } from "react";
-import { toggleBooleanState } from "@/lib/utils/commonFunctions";
-import Link from "next/link";
-import ResponseData from "@/lib/type/ResponseData";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import SignInForm from "@/component/sign/signInForm";
 
 export default function SignInPage() {
-    const [isVisible, setVisible] = useState(false);
-    const [isRemeber, setRemember] = useState(false);
-
-    const [username, setUserName] = useState("");
-    const [password, setPassWord] = useState("");
-
-    const [isLoginProgress, setLoginProgress] = useState(false);
-    const [errors, setErrors] = useState<String[]>([]);
-
-    const router = useRouter();
-
-    const userNameEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setUserName(e.target.value);
-    }
-
-    const passwordEventHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setPassWord(e.target.value);
-    }
-
-    /**
-     * @description login btn click handler
-     * @param e 
-     */
-    const loginBtnClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setLoginProgress(true);
-        let data: ResponseData;
-        const query = new URLSearchParams(window.location.search);
-        const redirectUrl = query.get("redirectUrl");
-
-        console.log("redirecturi---->"+redirectUrl);
-        
-        axios.post("/api/auth/signin", { username, password })
-            .then(success => {
-                data = success.data;
-                
-                //TODO success handler
-
-                setLoginProgress(false);
-            }).catch((error) => {
-                data = error.response.data;
-                setErrors(data.error);
-                setLoginProgress(false);
-            })
-
-    }
-
-
+    
     return (
         <Box>
             <Grid2 direction={"column"} sx={{ alignItems: 'center' }} spacing={4} container>
@@ -70,81 +15,7 @@ export default function SignInPage() {
                         {"Enter your credentials to access admin dashboard"}
                     </p>
                 </Grid2>
-                <>
-                    {
-                        errors.map((e,i) => {
-                            return (
-                                <Grid2 key={`error_sl_${i}`} sx={{ width: '100%' }}>
-                                    <Alert variant="filled" severity="error">
-                                        {`${e}`}
-                                    </Alert>
-                                </Grid2>
-                            )
-                        })
-                    }
-                </>
-                <Grid2>
-                    <FormControl sx={{ width: '25rem', marginBottom: '0.5rem' }} color="warning" variant="outlined">
-                        <OutlinedInput
-                            id="email_textbox"
-                            placeholder="Email-ID"
-                            value={username}
-                            onChange={userNameEventHandler}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton>
-                                        <Person />
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <FormControl sx={{ width: '25rem', marginBottom: '1rem' }} color="warning" variant="outlined">
-                        <OutlinedInput
-                            id="password_textbox"
-                            placeholder="Password"
-                            value={password}
-                            onChange={passwordEventHandler}
-                            type={isVisible ? "text" : "password"}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={() => toggleBooleanState(setVisible)} >
-                                        {isVisible ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </FormControl>
-                    <Grid2 direction={"row"} sx={{ justifyContent: 'space-between', alignItems: "center" }} container>
-                        <Grid2>
-                            <FormControlLabel label={<span className={`${style.rememberMeText}`} >{"Remember me"}</span>} control={<Checkbox checked={isRemeber} onChange={() => toggleBooleanState(setRemember)} />} />
-                        </Grid2>
-                        <Grid2>
-                            <Link href={"/auth/forgot-password"} style={{ textDecoration: "none" }}>
-                                <p className={`${style.forgotPassword}`}>
-                                    {"Forgot your password?"}
-                                </p>
-                            </Link>
-                        </Grid2>
-                    </Grid2>
-                </Grid2>
-                <Grid2 sx={{ width: "100%" }}>
-                    <button onClick={loginBtnClickHandler} disabled={isLoginProgress} className={`${style.signInButton}`}>
-                        <span>
-                            Sign in
-                        </span>
-                    </button>
-                </Grid2>
-                <Grid2>
-                    <p className={`${style.dontHaveAccount}`} >
-                        {"Don't have an account? "}
-                        <Link href={"/auth/contact-admin"} style={{ textDecoration: "none" }}>
-                            <span className={`${style.forgotPassword}`}>
-                                {"Contact admin"}
-                            </span>
-                        </Link>
-                    </p>
-                </Grid2>
+                <SignInForm/>
             </Grid2>
         </Box>
     )
