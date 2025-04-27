@@ -106,7 +106,7 @@ export default function SignInForm(){
                     </FormControl>
                     <Grid2 direction={"row"} sx={{ justifyContent: 'space-between', alignItems: "center" }} container>
                         <Grid2>
-                            <FormControlLabel label={<span className={`${style.rememberMeText}`} >{"Remember me"}</span>} control={<Checkbox checked={isRemeber} onChange={() => toggleBooleanState(setRemember)} />} />
+                            <FormControlLabel label={<span className={`${style.rememberMeText}`} >{"Remember me"}</span>} control={<Checkbox style={{color: '#152b59'}} checked={isRemeber} onChange={() => toggleBooleanState(setRemember)} />} />
                         </Grid2>
                         <Grid2>
                             <Link href={"/auth/forgot-password"} style={{ textDecoration: "none" }}>

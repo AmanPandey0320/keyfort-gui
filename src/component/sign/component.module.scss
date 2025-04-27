@@ -37,6 +37,9 @@
     &:active{
         background-color: var(--brown);
     }
+    &:disabled{
+        background-color: grey;
+    }
     
 }
 
