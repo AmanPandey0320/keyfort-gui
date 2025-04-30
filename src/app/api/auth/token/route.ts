@@ -28,6 +28,9 @@ export async function POST(req: NextRequest) {
         }
 
         let response = NextResponse.json(null,{ status: data?.status });
+
+        // TODO: Remove this
+        // TODO: read and set cookie
         const accessToken = data.data?.at(0)?.access;
         const refreshToken = data.data?.at(0)?.refresh;
 
