@@ -41,7 +41,9 @@ export default function SignInForm() {
             await axios.post("/api/auth/token?grantType=authorization", { token });
 
             //success handler
-
+            const query = new URLSearchParams(window.location.search);
+            const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
+            window.location.href = redirectUrl;
         } catch (error: any) {
             data = error.response.data;
             setErrors(data.error);
@@ -55,12 +57,7 @@ export default function SignInForm() {
     const loginBtnClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setLoginProgress(true);
 
-        handleLoginReq()
-            .then(() => {
-                const query = new URLSearchParams(window.location.search);
-                const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
-                window.location.href = redirectUrl;
-            }).finally(() => {
+        handleLoginReq().finally(() => {
                 setLoginProgress(false);
             })
 
