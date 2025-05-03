@@ -31,14 +31,12 @@ export default function SignInForm() {
     const handleLoginReq = async () => {
         let data: ResponseData;
         try {
-
-
-            let response = await axios.post("/api/auth/signin", { username, password });
+            let response = await axios.post("http://localhost:8085/api/v1/auth/super/login_action?clientId=203b3aba-2c62-4404-9566-0fb77f91d8a0&redirectUri=http://localhost:3000/*", { username, password });
             data = response.data;
             const token = data?.data?.at(0)?.authorizationCode;
 
             // get access token
-            await axios.post("/api/auth/token?grantType=authorization", { token });
+            await axios.post("http://localhost:8085/api/v1/auth/super/token?grantType=authorization", { token });
 
             //success handler
             const query = new URLSearchParams(window.location.search);
