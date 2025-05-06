@@ -3,6 +3,8 @@ export default async function ConsoleLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
+
+    
     
     return (
         <div>
