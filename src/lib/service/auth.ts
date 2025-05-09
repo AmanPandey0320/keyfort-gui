@@ -13,7 +13,7 @@ export async function authorizeClient(){
             "clientId":KF_CLIENT_ID,
             "clientSecret":KF_CLIENT_SECRET,
             "grantType":"authorization_code",
-            "redirectUri": "http://localhost:3000"
+            "redirectUri": "http://localhost:8085"
         }
 
         const response = await kfBackendClient.post(ENDPOINT.AUTHZ_CLIENT_API,body);

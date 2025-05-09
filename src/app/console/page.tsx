@@ -2,7 +2,7 @@
 export default function Console() {
     return (
       <div>
-        Home
+        Console
       </div>
     );
   }
