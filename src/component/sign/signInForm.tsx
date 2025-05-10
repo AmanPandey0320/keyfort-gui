@@ -8,7 +8,7 @@ import { toggleBooleanState } from "@/lib/utils/commonFunctions";
 import Link from "next/link";
 import ResponseData from "@/lib/type/ResponseData";
 import axios from "axios";
-
+import { KF_CLIENT_ID,KF_CLIENT_SECRET } from "@/component/config/env";
 
 export default function SignInForm() {
     const [isVisible, setVisible] = useState(false);
@@ -31,7 +31,9 @@ export default function SignInForm() {
     const handleLoginReq = async () => {
         let data: ResponseData;
         try {
-            let response = await axios.post("/api/v1/auth/super/login_action?clientId=203b3aba-2c62-4404-9566-0fb77f91d8a0&redirectUri=http://localhost:3000/*", { username, password });
+            const query = new URLSearchParams(window.location.search);
+            const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
+            let response = await axios.post(`/api/v1/auth/super/login_action?redirectUri=${redirectUrl}`, { username, password });
             data = response.data;
             const token = data?.data?.at(0)?.authorizationCode;
 
@@ -39,8 +41,8 @@ export default function SignInForm() {
             await axios.post("/api/v1/auth/super/token", { token, grantType: "authorization" });
 
             //success handler
-            const query = new URLSearchParams(window.location.search);
-            const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
+            
+            console.log(redirectUrl)
             window.location.href = redirectUrl;
         } catch (error: any) {
             data = error.response.data;

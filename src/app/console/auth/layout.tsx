@@ -9,7 +9,7 @@ export default async function AuthLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const isClientValid : Boolean = await authorizeClient();
+    const isClientValid: Boolean = await authorizeClient();
     return (
         <div className={styles.authLayout}>
             <div className={`${styles.boxLayout}`} >
@@ -21,7 +21,7 @@ export default async function AuthLayout({
                         <Image className={styles.logoImg} src={logo} alt="keyfort_logo" />
                     </div>
                     <div>
-                        {isClientValid? children : "Invalid client details"}
+                        {isClientValid ? children : "Invalid client details"}
                     </div>
                 </Grid2>
             </div>

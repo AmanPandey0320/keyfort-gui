@@ -1,4 +1,4 @@
-import {KF_CLIENT_ID,KF_CLIENT_SECRET} from "@/lib/config/envConfig";
+import {KF_CLIENT_ID,KF_CLIENT_SECRET,KF_REDIRECT_URI} from "@/lib/config/envConfig";
 import ENDPOINT from "@/assets/data/api";
 import { kfBackendClient } from "../utils/httpUtil";
 
@@ -13,7 +13,7 @@ export async function authorizeClient(){
             "clientId":KF_CLIENT_ID,
             "clientSecret":KF_CLIENT_SECRET,
             "grantType":"authorization_code",
-            "redirectUri": "http://localhost:8085"
+            "redirectUri": KF_REDIRECT_URI
         }
 
         const response = await kfBackendClient.post(ENDPOINT.AUTHZ_CLIENT_API,body);
