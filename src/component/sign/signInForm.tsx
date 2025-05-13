@@ -8,7 +8,7 @@ import { toggleBooleanState } from "@/lib/utils/commonFunctions";
 import Link from "next/link";
 import ResponseData from "@/lib/type/ResponseData";
 import axios from "axios";
-import { KF_CLIENT_ID,KF_CLIENT_SECRET } from "@/component/config/env";
+import { KF_CLIENT_ID } from "@/component/config/env";
 
 export default function SignInForm() {
     const [isVisible, setVisible] = useState(false);
@@ -28,22 +28,32 @@ export default function SignInForm() {
         setPassWord(e.target.value);
     }
 
+    const createRedirectWithCode = (uri:String, code:String, state:String | null) => {
+        if(uri.includes("?")){
+            return `${uri}&code=${code}&state=${state}`;
+        }else{
+            return `${uri}?code=${code}&state=${state}`;
+        }
+    }
+
     const handleLoginReq = async () => {
         let data: ResponseData;
         try {
             const query = new URLSearchParams(window.location.search);
-            const redirectUrl = query.get("redirectUrl") ?? window.location.origin;
-            let response = await axios.post(`/api/v1/auth/super/login_action?redirectUri=${redirectUrl}`, { username, password });
+            const redirectUri = query.get("redirect_uri") ?? window.location.origin;
+            const clientId = query.get("client_id") ?? KF_CLIENT_ID;
+            const state = query.get("state");
+
+            const response = await axios.post(`/api/v1/auth/super/login_action`, { username, password,clientId });
             data = response.data;
             const token = data?.data?.at(0)?.authorizationCode;
 
-            // get access token
-            await axios.post("/api/v1/auth/super/token", { token, grantType: "authorization" });
+            if(token == null || token == undefined){
+                setErrors(["Unexpected error"]);
+                return;
+            }
 
-            //success handler
-            
-            console.log(redirectUrl)
-            window.location.href = redirectUrl;
+            window.location.href = createRedirectWithCode(redirectUri,token,state);
         } catch (error: any) {
             data = error.response.data;
             setErrors(data.error);
