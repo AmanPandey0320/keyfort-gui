@@ -3,36 +3,37 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function SignInCallBack(){
+export default function SignInCallBack() {
     const [errors, setErrors] = useState<String[]>([]);
     const [isProgress, setProgress] = useState(false);
 
     useEffect(() => {
+        console.log("use effect executed");
         const query = new URLSearchParams(window.location.search);
         const state = query.get("state");
         const code = query.get("code");
-        let redirectUri = `${window.location.href}/console`;
+        let redirectUri = `${window.location.origin}/console`;
 
-        if(code == null){
+        if (code == null) {
             setErrors(["Invalid redirect paramaters!"]);
             return;
         }
 
-        if(state != null){
+        if (state != null) {
             //TODO: implement state creation while auth guard
         }
 
-        
 
-        // axios.post("/api/v1/auth/super/token", { token, grantType: "authorization" }).then(() => {
-        //     window.location.href = redirectUrl;
-        // }).catch(e => {
-        //     const data = e.response?.data;
-        //     setErrors(data?.error);
-        // })
-    },[]);
 
-    return(
+        axios.post("/api/v1/auth/super/token", { token: code, grantType: "authorization" }).then(() => {
+            window.location.href = redirectUri;
+        }).catch(e => {
+            const data = e.response?.data;
+            setErrors(data?.error);
+        })
+    }, []);
+
+    return (
         <p>
 
         </p>
