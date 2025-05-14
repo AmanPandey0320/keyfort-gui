@@ -25,7 +25,7 @@ export default function SignInCallBack() {
 
 
 
-        axios.post("/api/v1/auth/super/token", { token: code, grantType: "authorization" }).then(() => {
+        axios.get(`/api/v1/auth/super/token?code=${code}`,).then(() => {
             window.location.href = redirectUri;
         }).catch(e => {
             const data = e.response?.data;
